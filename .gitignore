@@ -1,0 +1,36 @@
+##
+# generic files to ignore
+
+*~
+*.lock
+*.swp
+*.out
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+##
+# maven ignore
+
+target/
+
+##
+# netbeans ignore
+
+nbproject/
+
+##
+# intellij ignore
+
+*.iml
+*.ipr
+*.iws
+.idea/
+
+##
+# eclipse ignore
+.metadata
+.settings/
+.project
+.classpath
+

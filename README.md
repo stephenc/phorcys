@@ -4,20 +4,22 @@ Phorcys is a session store for <a href="">Jetty</a> using <a href="">Hector</a> 
 <h2>Configuring the CassandraSessionIdManager</h2>
 You need to configure a com.github.stephenc.phorcys.CassandraSessionIdManager instance, either in embedded code or in a jetty.xml file. Here is an example of a jetty.xml setup:
 
+<pre>
 <Set name="sessionIdManager">
-     <New id="jdbcidmgr" class="com.github.stephenc.phorcys.CassandraSessionIdManager">
-         <Arg><Ref id="Server"/></Arg>
-         <Set name="workerName">fred</Set>
-         <Set name="hosts">192.168.1.5</Set>
-         <Set name="clusterName">Test Cluster</Set>
-         <Set name="keyspaceName">Jetty</Set>
-         <Set name="columnFamilyName">Sessions</Set>
-     </New>
- </Set>
- <Call name="setAttribute">
-       <Arg>jdbcIdMgr</Arg>
-       <Arg><Ref id="jdbcidmgr"/></Arg>
- </Call>
+  <New id="jdbcidmgr" class="com.github.stephenc.phorcys.CassandraSessionIdManager">
+    <Arg><Ref id="Server"/></Arg>
+    <Set name="workerName">fred</Set>
+    <Set name="hosts">192.168.1.5</Set>
+    <Set name="clusterName">Test Cluster</Set>
+    <Set name="keyspaceName">Jetty</Set>
+    <Set name="columnFamilyName">Sessions</Set>
+  </New>
+</Set>
+<Call name="setAttribute">
+  <Arg>jdbcIdMgr</Arg>
+  <Arg><Ref id="jdbcidmgr"/></Arg>
+</Call>
+</pre>
 Notice that the CassandraSessionIdManager needs access to Cassandra.
 
 As Jetty configuration files are direct mappings of XML to Java, it is straightforward to see how to do this in code, but here's an example anyway:

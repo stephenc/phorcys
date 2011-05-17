@@ -37,7 +37,7 @@ You must configure the CassandraSessionIdManager with a workerName that is uniqu
 
 You can also configure how often the persistent session mechanism sweeps the database looking for old, expired sessions with the scavengeInterval setting. The default value is 60 seconds. We recommend that you not increase the frequency because doing so increases the load on the database with very little gain; old, expired sessions can harmlessly sit in the database.
 
-Configuring a CassandraSessionManager
+<h2>Configuring a CassandraSessionManager</h2>
 The way you configure a CassandraSessionManager depends on whether you're configuring from a context xml file or a jetty-web.xml file or code. The basic difference is how you get a reference to the Jetty org.eclipse.jetty.server.Jetty instance.
 
 From a context xml file, you reference the Server instance as a Ref:
@@ -47,7 +47,6 @@ From a context xml file, you reference the Server instance as a Ref:
         <Arg>jdbcIdMgr</Arg>
       </Call>
     </Ref>
-
     <Set name="sessionHandler">
       <New class="org.eclipse.jetty.server.session.SessionHandler">
         <Arg>
@@ -62,20 +61,21 @@ From a context xml file, you reference the Server instance as a Ref:
 
 From a WEB-INF/jetty-web.xml file, you can reference the Server instance directly:
 
-<Get name="server">
-    <Get id="jdbcIdMgr" name="sessionIdManager"/>
- </Get>
- <Set name="sessionHandler">
-    <New class="org.eclipse.jetty.server.session.SessionHandler">
-      <Arg>
-        <New class="com.github.stephenc.phorcys.CassandraSessionManager">
-          <Set name="idManager">
-            <Ref id="jdbcIdMgr"/>
-          </Set>
-        </New>
-      </Arg>
-    </New>
- </Set>
+    <Get name="server">
+      <Get id="jdbcIdMgr" name="sessionIdManager"/>
+    </Get>
+    <Set name="sessionHandler">
+      <New class="org.eclipse.jetty.server.session.SessionHandler">
+        <Arg>
+          <New class="com.github.stephenc.phorcys.CassandraSessionManager">
+            <Set name="idManager">
+              <Ref id="jdbcIdMgr"/>
+            </Set>
+          </New>
+        </Arg>
+      </New>
+    </Set>
+
 If you're embedding this in code:
 
 //assuming you have already set up the JDBCSessionIdManager as shown earlier

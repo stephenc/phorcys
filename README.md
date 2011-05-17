@@ -23,15 +23,15 @@ Notice that the CassandraSessionIdManager needs access to Cassandra.
 
 As Jetty configuration files are direct mappings of XML to Java, it is straightforward to see how to do this in code, but here's an example anyway:
 
-Server server = new Server();
-     ...
- CassandraSessionIdManager idMgr = new CassandraSessionIdManager(server);
- idMgr.setWorkerName("fred");
- idMgr.setHosts("192.168.1.5,192.168.1.6");
- idMgr.setClusterName("Jetty");
- idMgr.setKeyspaceName("Jetty");
- idMgr.setColumnFamilyName("Sessions");
- server.setSessionIdManager(idMgr);
+    Server server = new Server();
+    ...
+    CassandraSessionIdManager idMgr = new CassandraSessionIdManager(server);
+    idMgr.setWorkerName("fred");
+    idMgr.setHosts("192.168.1.5,192.168.1.6");
+    idMgr.setClusterName("Jetty");
+    idMgr.setKeyspaceName("Jetty");
+    idMgr.setColumnFamilyName("Sessions");
+    server.setSessionIdManager(idMgr);
 
 You must configure the CassandraSessionIdManager with a workerName that is unique across the cluster. Typically the name relates to the physical node on which the instance is executing. If this name is not unique, your load balancer might fail to distribute your sessions correctly.
 
@@ -42,23 +42,24 @@ The way you configure a CassandraSessionManager depends on whether you're config
 
 From a context xml file, you reference the Server instance as a Ref:
 
-<Ref name="Server" id="Server">
-   <Call id="jdbcIdMgr" name="getAttribute">
-     <Arg>jdbcIdMgr</Arg>
-   </Call>
- </Ref>
+    <Ref name="Server" id="Server">
+      <Call id="jdbcIdMgr" name="getAttribute">
+        <Arg>jdbcIdMgr</Arg>
+      </Call>
+    </Ref>
 
- <Set name="sessionHandler">
-    <New class="org.eclipse.jetty.server.session.SessionHandler">
-      <Arg>
-        <New id="jdbcmgr" class="com.github.stephenc.phorcys.CassandraSessionManager">
-          <Set name="idManager">
-            <Ref id="jdbcIdMgr"/>
-          </Set>
-        </New>
-      </Arg>
-    </New>
- </Set>
+    <Set name="sessionHandler">
+      <New class="org.eclipse.jetty.server.session.SessionHandler">
+        <Arg>
+          <New id="jdbcmgr" class="com.github.stephenc.phorcys.CassandraSessionManager">
+            <Set name="idManager">
+              <Ref id="jdbcIdMgr"/>
+            </Set>
+          </New>
+        </Arg>
+      </New>
+    </Set>
+
 From a WEB-INF/jetty-web.xml file, you can reference the Server instance directly:
 
 <Get name="server">

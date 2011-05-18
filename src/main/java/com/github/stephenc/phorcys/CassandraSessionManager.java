@@ -1,5 +1,6 @@
 package com.github.stephenc.phorcys;
 
+import org.eclipse.jetty.server.SessionIdManager;
 import org.eclipse.jetty.server.session.AbstractSessionManager;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +9,19 @@ import java.io.ObjectInputStream;
 import java.util.Map;
 
 public class CassandraSessionManager extends AbstractSessionManager {
+
+    public void setIdManager(CassandraSessionIdManager metaManager) {
+        super.setIdManager(metaManager);
+    }
+
+    @Override
+    public void setIdManager(SessionIdManager metaManager) {
+        if (metaManager instanceof CassandraSessionIdManager) {
+            super.setIdManager(metaManager);
+        } else {
+            throw new IllegalArgumentException("SessionIdManager must implement CassandraSessionIdManager");
+        }
+    }
 
     @Override
     public Map getSessionMap() {
@@ -26,7 +40,12 @@ public class CassandraSessionManager extends AbstractSessionManager {
 
     @Override
     protected void invalidateSessions() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        //Do nothing - we don't want to remove and
+        //invalidate all the sessions because this
+        //method is called from doStop(), and just
+        //because this context is stopping does not
+        //mean that we should remove the session from
+        //any other nodes
     }
 
     @Override

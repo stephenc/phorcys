@@ -65,6 +65,14 @@ public class CassandraSessionIdManager extends AbstractSessionIdManager {
         this.columnFamilyName = columnFamilyName;
     }
 
+    Cluster getCluster() {
+        return cluster;
+    }
+
+    Keyspace getKeyspace() {
+        return keyspace;
+    }
+
     @Override
     protected void doStart() throws Exception {
         super.doStart();
